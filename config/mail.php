@@ -2,6 +2,8 @@
 
 return [
 
+    'supportEmail' => 'caloggero.a@gmail.com',
+
     /*
     |--------------------------------------------------------------------------
     | Mail Driver
