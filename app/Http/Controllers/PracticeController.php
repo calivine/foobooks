@@ -6,6 +6,12 @@ use IanLChapman\PigLatinTranslator\Parser;
 
 class PracticeController extends Controller
 {
+    public function practice3()
+    {
+        $translator = new Parser();
+        $translation = $translator->translate('Hello world!');
+        dump($translation);
+    }
     /*
      * Demonstrating getting values from configs
      */
