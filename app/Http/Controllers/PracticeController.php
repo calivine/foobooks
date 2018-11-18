@@ -1,11 +1,107 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Book;
 use Illuminate\Http\Request;
 use IanLChapman\PigLatinTranslator\Parser;
 
 class PracticeController extends Controller
 {
+    public function practice12()
+    {
+        $result = Book::where('author', '=', 'J.K. Rowling')->delete();
+        dump($result);
+    }
+
+    public function practice11()
+    {
+        $result = Book::orderBy('published_year', 'desc')->get();
+        dump($result->toArray());
+    }
+
+    public function practice10()
+    {
+        $result = Book::orderBy('title')->get();
+        dump($result->toArray());
+    }
+
+    public function practice9()
+    {
+        $result = Book::where('published_year', '>', '1950')->get();
+        dump($result->toArray());
+    }
+
+    public function practice8()
+    {
+        $result = Book::orderBy('created_at', 'desc')->limit(2)->get();
+        dump($result->toArray());
+    }
+
+
+    public function practice7()
+    {
+        # Chain two `where` constraints
+        $result = Book::where('published_year', '>', '1960')->where('id', '<', 5 )->get();
+        # dump($result->toArray());
+        foreach($result as $book) {
+            dump($book->title,
+                 $book->author);
+        }
+    }
+
+
+    public function practice6()
+    {
+        # First get a book to update
+        $book = Book::where('author', '=', 'F. Scott Fitzgerald')->first();
+
+        if (!$book) {
+            dump("Book not found, can't update.");
+        } else {
+            # Change some properties
+            $book->title = 'The Really Great Gatsby';
+            $book->published_year = '2025';
+
+            # Save the changes
+            $book->save();
+
+            dump('Update complete; check the database to confirm the update worked.');
+        }
+    }
+
+    public function practice5()
+    {
+        $books = Book::where('title', 'LIKE', '%Harry Potter%')->get();
+        if ($books->isEmpty()) {
+            dump('No matches found');
+        } else {
+            foreach ($books as $book) {
+                dump($book->title);
+            }
+        }
+    }
+
+    public function practice4()
+    {
+        # Instantiate a new Book Model object
+        $book = new Book();
+
+        # Set the properties
+        # Note how each property corresponds to a field in the table
+        $book->title = 'Harry Potter and the Sorcerer\'s Stone';
+        $book->author = 'J.K. Rowling';
+        $book->published_year = 1997;
+        $book->cover_url = 'http://prodimage.images-bn.com/pimages/9780590353427_p0_v1_s484x700.jpg';
+        $book->purchase_url = 'http://www.barnesandnoble.com/w/harry-potter-and-the-sorcerers-stone-j-k-rowling/1100036321?ean=9780590353427';
+
+        # Invoke the Eloquent `save` method to generate a new row in the
+        # `books` table, with the above data
+        $book->save();
+
+        dump('Added: '.$book->title);
+    }
+
+
     public function practice3()
     {
         $translator = new Parser();
